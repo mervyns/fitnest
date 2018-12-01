@@ -15,7 +15,7 @@ class EventForm extends Component {
   };
 
   componentDidMount() {
-    if (this.props.selectedEvent !== null) {
+    if (this.props.selectedEvent !== undefined) {
       this.setState({
         event: this.props.selectedEvent
       });
@@ -49,6 +49,7 @@ class EventForm extends Component {
   render() {
     const { handleCancel } = this.props;
     const { event } = this.state;
+    console.log(event)
     return (
       <Segment>
         <Form onSubmit={this.onFormSubmit}>
