@@ -7,10 +7,15 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
+import { openModal, closeModal } from '../actions/modalActions'
 
 const mapState = state => ({
   data: ""
 });
+
+const actions = {
+  openModal
+};
 
 const Marker = () => <Icon name="marker" size="big" color="red" />;
 
@@ -55,6 +60,9 @@ class TestComponent extends Component {
           />
         }
         <h1>Test Area</h1>
+        <Button onClick={() => openModal('TestModal', {data: 34})} color="teal" content="Open Modal" />
+        <br />
+<br />
         <br />
         <br />
         <form onSubmit={this.handleFormSubmit}>

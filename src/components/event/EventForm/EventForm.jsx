@@ -4,6 +4,7 @@ import { Form, Segment, Button, Grid, Header } from "semantic-ui-react";
 import { reduxForm, Field } from "redux-form";
 import Script from "react-load-script";
 import {
+  createValidator,
   composeValidators,
   combineValidators,
   isRequired,

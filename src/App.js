@@ -9,7 +9,9 @@ import PeopleDashboard from "./components/user/PeopleDashboard/PeopleDashboard";
 import UserDetailedPage from "./components/user/UserDetailed/UserDetailedPage";
 import SettingsDashboard from "./components/user/Settings/SettingsDashboard";
 import EventForm from "./components/event/EventForm/EventForm";
-import TestComponent from './components/test'
+import TestComponent from "./components/test";
+import LoginForm from './components/auth/LoginForm'
+import RegisterForm from './components/auth/RegisterForm'
 
 class App extends Component {
   render() {
@@ -28,12 +30,14 @@ class App extends Component {
                 <Switch>
                   <Route path="/events" component={EventDashboard} />
                   <Route path="/event/:id" component={EventDetailedPage} />
-                  <Route path="/manage/:id" component={EventForm} /> 
+                  <Route path="/manage/:id" component={EventForm} />
                   <Route path="/people" component={PeopleDashboard} />
                   <Route path="/profile/:id" component={UserDetailedPage} />
                   <Route path="/test" component={TestComponent} />
                   <Route path="/settings" component={SettingsDashboard} />
                   <Route path="/createEvent" component={EventForm} />
+                  <Route path="/login" component={LoginForm} />
+                  <Route path="/register" component={RegisterForm} />
                 </Switch>
               </Container>
             </div>
