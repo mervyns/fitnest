@@ -1,135 +1,38 @@
-import React, { Component } from "react";
-import { Grid, Button } from "semantic-ui-react";
-import cuid from "cuid";
-import EventList from "../EventList/EventList";
-import EventForm from "../EventForm/EventForm";
+import React, { Component } from 'react';
+import { Grid } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import EventList from '../EventList/EventList';
+import { deleteEvent } from '../../../actions/eventActions'
 
-const eventsDashboard = [
-  {
-    id: "1",
-    title: "21 KM Run",
-    date: "2018-11-11T11:00:00+00:00",
-    category: "Run",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-    city: "Singapore",
-    venue: "East Coast Park",
-    hostedBy: "Bob",
-    hostPhotoURL: "https://randomuser.me/api/portraits/men/20.jpg",
-    attendees: [
-      {
-        id: "a",
-        name: "Bob",
-        photoURL: "https://randomuser.me/api/portraits/men/20.jpg"
-      },
-      {
-        id: "b",
-        name: "Tom",
-        photoURL: "https://randomuser.me/api/portraits/men/22.jpg"
-      }
-    ]
-  },
-  {
-    id: "2",
-    title: "Tuesday CoT Bootcamp",
-    date: "2018-11-12T14:00:00+00:00",
-    category: "Boot Camp",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
-    city: "Singapore",
-    venue: "Fort Canning Park",
-    hostedBy: "Tom",
-    hostPhotoURL: "https://randomuser.me/api/portraits/men/22.jpg",
-    attendees: [
-      {
-        id: "b",
-        name: "Tom",
-        photoURL: "https://randomuser.me/api/portraits/men/22.jpg"
-      },
-      {
-        id: "a",
-        name: "Bob",
-        photoURL: "https://randomuser.me/api/portraits/men/20.jpg"
-      }
-    ]
-  }
-];
+const mapState = state => ({
+  events: state.events
+});
 
+const actions = {
+  deleteEvent
+}
 
 class EventDashboard extends Component {
-  state = {
-    events: eventsDashboard,
-    isOpen: false,
-    selectedEvent: null
+
+  handleDeleteEvent = eventId => () => {
+    this.props.deleteEvent(eventId);
   };
-
-  handleFormOpen = () => {
-    this.setState({
-      selectedEvent: null,
-      isOpen: true
-    });
-  };
-
-  handleCancel = () => {
-    this.setState({
-      isOpen: false
-    });
-  }
-
-  handleCreateEvent = newEvent => {
-    newEvent.id = cuid();
-    newEvent.hostPhotoURL = '/assets/user.png';
-    const updatedEvents = [...this.state.events, newEvent];
-    this.setState({
-      events: updatedEvents,
-      isOpen: false
-    });
-  };
-
-  handleUpdateEvent = (updatedEvent) => {
-    this.setState({
-      events: this.state.events.map(event => {
-        if (event.id === updatedEvent.id) {
-          return Object.assign({}, updatedEvent)
-        } else {
-          return event
-        }
-      }),
-      isOpen: false,
-      selectedEvent: null
-    })
-  }
-
-  handleOpenEvent = (eventToOpen) => () => {
-    this.setState({
-      selectedEvent: eventToOpen,
-      isOpen: true
-    })
-  }
-
-  handleDeleteEvent = (eventId) => () => {
-    const updatedEvents = this.state.events.filter(e => e.id !== eventId);
-    this.setState({
-      events: updatedEvents
-    })
-  }
 
   render() {
-    const {selectedEvent} = this.state;
+    const {events} = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList deleteEvent={this.handleDeleteEvent} onEventOpen={this.handleOpenEvent} events={this.state.events} />
+          <EventList
+            deleteEvent={this.handleDeleteEvent}
+            events={events}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
-          <Button onClick={this.handleFormOpen} positive content="Create Event" />
-          {this.state.isOpen && (
-            <EventForm updateEvent={this.handleUpdateEvent} selectedEvent={selectedEvent} createEvent={this.handleCreateEvent} handleCancel={this.handleCancel} />
-          )}
         </Grid.Column>
       </Grid>
     );
   }
 }
 
-export default EventDashboard;
+export default connect(mapState, actions)(EventDashboard);
