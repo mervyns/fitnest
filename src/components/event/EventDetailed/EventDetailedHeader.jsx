@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const eventImageStyle = {
   filter: "brightness(30%)"
 };
+
 const eventImageTextStyle = {
   position: "absolute",
   bottom: "5%",
@@ -14,7 +15,14 @@ const eventImageTextStyle = {
   height: "auto",
   color: "white"
 };
-const EventDetailedHeader = ({ event }) => {
+
+const EventDetailedHeader = ({
+  event,
+  isHost,
+  isGoing,
+  goingToEvent,
+  cancelGoingToEvent
+}) => {
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -23,6 +31,7 @@ const EventDetailedHeader = ({ event }) => {
           fluid
           style={eventImageStyle}
         />
+
         <Segment basic style={eventImageTextStyle}>
           <Item.Group>
             <Item>
@@ -41,17 +50,26 @@ const EventDetailedHeader = ({ event }) => {
           </Item.Group>
         </Segment>
       </Segment>
+
       <Segment attached="bottom">
-        <Button>Cancel My Place</Button>
-        <Button color="teal">JOIN THIS EVENT</Button>
-        <Button
-          as={Link}
-          to={`/manage/${event.id}`}
-          color="orange"
-          floated="right"
-        >
-          Manage Event
-        </Button>
+        {!isHost && (
+          <div>
+            {isGoing ? (
+              <Button onClick={() => cancelGoingToEvent(event)}>
+                Cancel My Place
+              </Button>
+            ) : (
+              <Button onClick={() => goingToEvent(event)} color="teal">
+                JOIN THIS EVENT
+              </Button>
+            )}
+          </div>
+        )}
+        {isHost && (
+          <Button as={Link} to={`/manage/${event.id}`} color="orange">
+            Manage Event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );
